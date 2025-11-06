@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace FNAScreenServer
 {
@@ -32,7 +33,7 @@ namespace FNAScreenServer
 
             _graphics.PreferredBackBufferWidth = 1280;
             _graphics.PreferredBackBufferHeight = 720;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
 
@@ -66,6 +67,13 @@ namespace FNAScreenServer
 
         protected override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().GetPressedKeys().Length > 0 ||
+               Mouse.GetState().LeftButton == ButtonState.Pressed ||
+               Mouse.GetState().RightButton == ButtonState.Pressed)
+            {
+                Exit();
+            }
+
             for (var i = 0; i < snowflakeCount; i++)
             {
                 var snowflake = _snowflakes[i];
