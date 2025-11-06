@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace FNAScreenServer.Class
+namespace FNAScreenSaver.Class
 {
     /// <summary>
     /// Класс снежинки

@@ -1,2 +1,2 @@
-﻿using var game = new FNAScreenServer.Village();
+﻿using var game = new FNAScreenSaver.Village();
 game.Run();

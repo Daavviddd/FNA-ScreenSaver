@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNAScreenServer", "FNAScreenServer.csproj", "{03F5F8A4-A4EC-4950-AE55-D40013D8C0AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNAScreenSaver", "FNAScreenSaver.csproj", "{03F5F8A4-A4EC-4950-AE55-D40013D8C0AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
