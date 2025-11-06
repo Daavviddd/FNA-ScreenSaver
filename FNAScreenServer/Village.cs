@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using FNAScreenServer.Class;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace FNAScreenServer
 {
+    /// <summary>
+    /// Основной класс
+    /// </summary>
     public class Village : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager _graphics;
@@ -14,17 +18,13 @@ namespace FNAScreenServer
         private Texture2D _villageBackground;
         private Texture2D _snowflakeTexture;
 
-        private struct Snowflake
-        {
-            public Vector2 Position;
-            public float Speed;
-            public float Scale;
-        }
-
         private List<Snowflake> _snowflakes;
         private const int snowflakeCount = 1000;
         private Random random = new Random();
 
+        /// <summary>
+        /// Основные настройки
+        /// </summary>
         public Village()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,15 +43,7 @@ namespace FNAScreenServer
 
             for(var i = 0; i < snowflakeCount; i++)
             {
-                _snowflakes.Add(new Snowflake 
-                { 
-                    Position = new Vector2(
-                        random.Next(0,_graphics.PreferredBackBufferWidth),
-                        random.Next(-500,-50)
-                        ),
-                Speed = 1 + (float)random.NextDouble() * 4,
-                Scale = 0.01f + (float)random.NextDouble() * 0.04f
-                });
+                _snowflakes.Add(new Snowflake(random, _graphics.PreferredBackBufferWidth));
             }
 
             base.Initialize();
@@ -74,19 +66,9 @@ namespace FNAScreenServer
                 Exit();
             }
 
-            for (var i = 0; i < snowflakeCount; i++)
+            foreach (var snowflake in _snowflakes)
             {
-                var snowflake = _snowflakes[i];
-
-                snowflake.Position.Y += snowflake.Speed;
-
-                if (snowflake.Position.Y > _graphics.PreferredBackBufferHeight)
-                {
-                    snowflake.Position.Y = random.Next(-500, -50);
-                    snowflake.Position.X = random.Next(0, _graphics.PreferredBackBufferWidth);
-                }
-
-                _snowflakes[i] = snowflake;
+                snowflake.Update(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             }
 
             base.Update(gameTime);
