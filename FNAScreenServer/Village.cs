@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace FNAScreenServer
 {
@@ -11,6 +12,18 @@ namespace FNAScreenServer
 
         private Texture2D _villageBackground;
         private Texture2D _snowflakeTexture;
+
+        private struct Snowflake
+        {
+            public Vector2 Position;
+            public float Speed;
+            public float Scale;
+        }
+
+        private List<Snowflake> _snowflakes;
+        private const int snowflakeCount = 1000;
+        private Random random = new Random();
+
         public Village()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -25,7 +38,20 @@ namespace FNAScreenServer
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _snowflakes = new List<Snowflake>();
+
+            for(var i = 0; i < snowflakeCount; i++)
+            {
+                _snowflakes.Add(new Snowflake 
+                { 
+                    Position = new Vector2(
+                        random.Next(0,_graphics.PreferredBackBufferWidth),
+                        random.Next(-500,-50)
+                        ),
+                Speed = 1 + (float)random.NextDouble() * 4,
+                Scale = 0.01f + (float)random.NextDouble() * 0.04f
+                });
+            }
 
             base.Initialize();
         }
@@ -40,10 +66,20 @@ namespace FNAScreenServer
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            for (var i = 0; i < snowflakeCount; i++)
+            {
+                var snowflake = _snowflakes[i];
 
-            // TODO: Add your update logic here
+                snowflake.Position.Y += snowflake.Speed;
+
+                if (snowflake.Position.Y > _graphics.PreferredBackBufferHeight)
+                {
+                    snowflake.Position.Y = random.Next(-500, -50);
+                    snowflake.Position.X = random.Next(0, _graphics.PreferredBackBufferWidth);
+                }
+
+                _snowflakes[i] = snowflake;
+            }
 
             base.Update(gameTime);
         }
@@ -58,6 +94,11 @@ namespace FNAScreenServer
                 new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight),
                 Color.White);
 
+            foreach(var snowflakes in _snowflakes)
+            {
+                _spriteBatch.Draw(_snowflakeTexture, snowflakes.Position, null, Color.White, 0f, Vector2.Zero,
+                    snowflakes.Scale, SpriteEffects.None, 0f);
+            }
 
             _spriteBatch.End();
 
